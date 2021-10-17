@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head th:replace="~{base :: head}"/>
+<body>
+<div th:replace="~{base :: logo}"/>
+<div class="container">
+    <div th:replace="~{base :: titulo('Meus pedidos')}"/>
+    <nav th:replace="~{base :: menu}"/>
+    <div th:each="ped: ${pedidos}" class="card mb-3">
+        <th:block th:switch="${ped.status.name()}">
+            <div th:case="'AGUARDANDO'" th:text="${ped.name}" class="card-header alert-warning">Nome do produto</div>
+            <div th:case="'APROVADO'" th:text="${ped.name}" class="card-header alert-success">Nome do produto</div>
+            <div th:case="'ENTREGUE'" th:text="${ped.name}" class="card-header alert-dark">Nome do produto</div>
+        </th:block>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-8 mb-4">
+                    <div class="row">
+                        <div class="col-md-5">Valor:
+                            <span th:text="${ped.valorNegociado} != null ? ${' R$ ' + #numbers.formatDecimal(ped.valorNegociado,3,'POINT',2,'COMMA')} : ' Aguardando'">
+
+                            </span>
+                        </div>
+                        <div class="col-md-7">Data da entrega:
+                            <span th:if="${ped.dataDaEntrega} != null" th:text="${#temporals.format(ped.dataDaEntrega, 'dd/MM/yyyy')}"
+                                  class="form-control"></span>
+                        </div>
+                    </div>
+
+                    <div>Produto</div>
+                    <div><input th:value="${ped.urlDoProduto}"/></div>
+
+                    <div>Descição</div>
+                    <div>
+                        <textarea th:value="#{ped.descricao}" class="form-control">Descrição do pedido</textarea>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-4">
+                    <div>
+                        <img th:src="${ped.urlDaImagem}" class="img-thumbnail"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
