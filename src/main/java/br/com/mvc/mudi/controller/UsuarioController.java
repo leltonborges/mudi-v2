@@ -26,6 +26,8 @@ public class UsuarioController {
     public String home(Model model, Principal principal) {
         User user = userService.findByUsername(principal.getName());
         model.addAttribute("pedidos", pedidoService.findAllByUser(user));
+        String value = "meus-pedidos";
+        model.addAttribute("activeMenu", value);
         return "/usuario/home";
     }
 

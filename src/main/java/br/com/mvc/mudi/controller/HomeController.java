@@ -20,21 +20,12 @@ public class HomeController {
 
     @Autowired
     private PedidoService pedidoService;
-    @Autowired
-    private UserService userService;
 
     @GetMapping
-    public String home(Model model, Principal principal) {
-        User user = userService.findByUsername(principal.getName());
-        model.addAttribute("pedidos", pedidoService.findAllByUser(user));
-        return "home";
-    }
-
-    @GetMapping("/{status}")
-    public String porStatus(@PathVariable(value = "status") String status, Model model) {
-        model.addAttribute("pedidos",
-                pedidoService.findByStatus(StatusPedido.valueOf(status.toUpperCase())));
-        model.addAttribute("status", status);
+    public String home(Model model) {
+        model.addAttribute("pedidos", pedidoService.findByStatus(StatusPedido.ENTREGUE));
+        String value = "home";
+        model.addAttribute("activeMenu", value);
         return "home";
     }
 

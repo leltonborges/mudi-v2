@@ -5,6 +5,7 @@
 <body>
 <div th:replace="~{base :: logo}"/>
 <div class="container">
+    <div th:replace="~{base :: menu-tab}"/>
     <div th:replace="~{base :: titulo('Meus pedidos')}"/>
     <nav th:replace="~{base :: menu('usuario/pedidos')}"/>
     <div th:each="ped: ${pedidos}" class="card mb-3">
