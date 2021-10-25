@@ -2,6 +2,7 @@ package br.com.mvc.mudi.dto;
 
 import br.com.mvc.mudi.model.Pedido;
 import br.com.mvc.mudi.model.StatusPedido;
+import br.com.mvc.mudi.model.User;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
@@ -48,10 +49,10 @@ public class RequisicaoNovoPedido {
         this.descricaoProduto = descricaoProduto;
     }
 
-    public Pedido toPedido() {
+    public Pedido toPedido(User user) {
         Pedido pedido = new Pedido(null, this.nomeProduto,
                 null, LocalDate.now(), this.urlProduto,
-                this.urlImagem, this.descricaoProduto, StatusPedido.AGUARDANDO);
+                this.urlImagem, this.descricaoProduto, user,StatusPedido.AGUARDANDO);
         return  pedido;
     }
 }

@@ -6,7 +6,7 @@
 <div th:replace="~{base :: logo}"/>
 <div class="container">
     <div th:replace="~{base :: titulo('Meus pedidos')}"/>
-    <nav th:replace="~{base :: menu('home')}"/>
+    <nav th:replace="~{base :: menu('usuario/pedidos')}"/>
     <div th:each="ped: ${pedidos}" class="card mb-3">
         <th:block th:switch="${ped.status.name()}">
             <div th:case="'AGUARDANDO'" th:text="${ped.name}" class="card-header alert-warning">Nome do produto</div>

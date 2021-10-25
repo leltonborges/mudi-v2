@@ -15,31 +15,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.security.Principal;
 
 @Controller
-@RequestMapping("/home")
-public class HomeController {
-
+@RequestMapping(value = "/usuario")
+public class UsuarioController {
     @Autowired
     private PedidoService pedidoService;
     @Autowired
     private UserService userService;
 
-    @GetMapping
+    @GetMapping(value = "/pedidos")
     public String home(Model model, Principal principal) {
         User user = userService.findByUsername(principal.getName());
         model.addAttribute("pedidos", pedidoService.findAllByUser(user));
-        return "home";
+        return "/usuario/home";
     }
 
-    @GetMapping("/{status}")
-    public String porStatus(@PathVariable(value = "status") String status, Model model) {
+    @GetMapping("/pedidos/{status}")
+    public String porStatus(@PathVariable(value = "status") String status, Model model, Principal principal) {
+        User user = userService.findByUsername(principal.getName());
         model.addAttribute("pedidos",
-                pedidoService.findByStatus(StatusPedido.valueOf(status.toUpperCase())));
+                pedidoService.findAllByStatusAndUser(StatusPedido.valueOf(status.toUpperCase()), user));
         model.addAttribute("status", status);
-        return "home";
+        return "/usuario/home";
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public String onError() {
-        return "redirect:/home";
+        return "redirect:/usuario/home";
     }
 }

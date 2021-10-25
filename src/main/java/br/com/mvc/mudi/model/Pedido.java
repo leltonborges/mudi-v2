@@ -18,13 +18,16 @@ public class Pedido {
     private String urlDaImagem;
     private String descricao;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
+
     @Enumerated(EnumType.STRING)
     private StatusPedido status;
 
     public Pedido() {
     }
 
-    public Pedido(Long id, String name, BigDecimal valorNegociado, LocalDate dataDaEntrega, String urlDoProduto, String urlDaImagem, String descricao, StatusPedido status) {
+    public Pedido(Long id, String name, BigDecimal valorNegociado, LocalDate dataDaEntrega, String urlDoProduto, String urlDaImagem, String descricao, User user, StatusPedido status) {
         this.id = id;
         this.name = name;
         this.valorNegociado = valorNegociado;
@@ -32,6 +35,7 @@ public class Pedido {
         this.urlDoProduto = urlDoProduto;
         this.urlDaImagem = urlDaImagem;
         this.descricao = descricao;
+        this.user = user;
         this.status = status;
     }
 
@@ -97,5 +101,13 @@ public class Pedido {
 
     public void setStatus(StatusPedido status) {
         this.status = status;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

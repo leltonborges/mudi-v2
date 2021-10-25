@@ -30,10 +30,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/home", true)
+                .defaultSuccessUrl("/usuario/pedidos", true)
                 .permitAll()
                 .and()
-                .logout(logout -> logout.logoutUrl("/logout").permitAll());
+                .logout(logout -> logout.logoutUrl("/logout").permitAll())
+                .csrf().disable();
     }
 
     @Override
@@ -42,8 +43,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 //        UserDetails user =
 //                User.builder()
-//                        .username("maria")
-//                        .password(encoder.encode("maria"))
+//                        .username("lia")
+//                        .password(encoder.encode("lia"))
 //                        .roles("ADM", "USER")
 //                        .build();
 
