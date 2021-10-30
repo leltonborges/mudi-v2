@@ -5,6 +5,9 @@ import br.com.mvc.mudi.model.User;
 import br.com.mvc.mudi.service.PedidoService;
 import br.com.mvc.mudi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,7 +26,8 @@ public class HomeController {
 
     @GetMapping
     public String home(Model model) {
-        model.addAttribute("pedidos", pedidoService.findByStatus(StatusPedido.ENTREGUE));
+        PageRequest pageRequest = PageRequest.of(0, 5, Sort.Direction.valueOf("DESC"), "dataDaEntrega");
+        model.addAttribute("pedidos", pedidoService.findByStatusAndSort(StatusPedido.ENTREGUE, pageRequest));
         String value = "home";
         model.addAttribute("activeMenu", value);
         return "home";

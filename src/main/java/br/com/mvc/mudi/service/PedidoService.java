@@ -5,6 +5,9 @@ import br.com.mvc.mudi.model.StatusPedido;
 import br.com.mvc.mudi.model.User;
 import br.com.mvc.mudi.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +31,8 @@ public class PedidoService {
         pedidoRepo.save(pedido);
     }
 
-    public List<Pedido> findByStatus(StatusPedido status) {
-        return pedidoRepo.findByStatus(status);
+    public Page<Pedido> findByStatusAndSort(StatusPedido status, Pageable pageable) {
+        return pedidoRepo.findAllByStatus(status, pageable);
     }
 
     public List<Pedido> findAllByStatusAndUser(StatusPedido status, User user) {

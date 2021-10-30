@@ -37,6 +37,8 @@ public class UsuarioController {
         model.addAttribute("pedidos",
                 pedidoService.findAllByStatusAndUser(StatusPedido.valueOf(status.toUpperCase()), user));
         model.addAttribute("status", status);
+        String value = "meus-pedidos";
+        model.addAttribute("activeMenu", value);
         return "/usuario/home";
     }
 

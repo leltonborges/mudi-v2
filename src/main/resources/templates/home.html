@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{base :: head('Home')}"/>
 <body>
 <div th:replace="~{base :: logo}"/>
@@ -18,7 +18,7 @@
                     <div class="row">
                         <div class="col-md-5">Valor:
                             <span th:text="${ped.valorNegociado} != null ? ${' R$ '
-                            + #numbers.formatDecimal(ped.valorNegociado,3,'POINT',2,'COMMA')} : ' Aguardando'"></span>                      </span>
+                            + #numbers.formatDecimal(ped.valorNegociado,3,'POINT',2,'COMMA')} : ' Aguardando'"></span>
                         </div>
                         <div class="col-md-7">Data da entrega:
                             <span th:if="${ped.dataDaEntrega} != null"
