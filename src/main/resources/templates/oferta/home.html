@@ -5,7 +5,7 @@
 <div th:replace="~{base :: logo}"/>
 <div class="container" id="ofertas">
     <div th:replace="~{base :: menu-tab}"/>
-    <div th:replace="~{base :: titulo('Últimos Pedidos')}"/>
+    <div th:replace="~{base :: titulo('Faça sua oferta')}"/>
     <div v-for="pedido in content" class="card mb-3">
         <div class="card-header alert-warning">{{pedido.name}}</div>
         <div class="card-body">
