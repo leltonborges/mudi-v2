@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{base :: head('Home')}"/>
+<body onload="onLoad()">
+<div th:replace="~{base :: logo}"/>
+<div class="container" id="ofertas">
+    <div th:replace="~{base :: menu-tab}"/>
+    <div th:replace="~{base :: titulo('Últimos Pedidos')}"/>
+    <div v-for="pedido in content" class="card mb-3">
+        <div class="card-header alert-warning">{{pedido.name}}</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-8 mb-4">
+                    <div class="row">
+                        <div class="col-md-5">Valor:
+                            <input type="text" name="valueProduct" id="valueProduct">
+                        </div>
+                        <div class="col-md-7">Data da entrega:
+                            <input type="text" name="dataEntrega" id="dataEntrega">
+                        </div>
+                    </div>
+
+                    <div>Produto:
+                        <a v-bind:href="pedido.urlDoProduto" target="_blank">{{pedido.name}}</a>
+                    </div>
+
+                    <div>Descição</div>
+                    <div>
+                        <textarea class="form-control">{{pedido.descricao}}</textarea>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-4">
+                    <div>
+                        <img v-bind:src="pedido.urlDaImagem" class="img-thumbnail"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function onLoad() {
+        var app = new Vue({
+            el: '#ofertas',
+            data: {
+                "content": [
+                    {
+                        "id": 18,
+                        "name": "muchila",
+                        "valorNegociado": 180.52,
+                        "dataDaEntrega": "2010-01-05",
+                        "urlDoProduto": "https://m.media-amazon.com/images/I/61CpQcnydcL._AC_SL1000_.jpg",
+                        "urlDaImagem": "https://m.media-amazon.com/images/I/61CpQcnydcL._AC_SL1000_.jpg",
+                        "descricao": "sfdsdf",
+                        "status": "AGUARDANDO"
+                    },
+                    {
+                        "id": 15,
+                        "name": "muchila",
+                        "valorNegociado": 180.52,
+                        "dataDaEntrega": "2007-07-20",
+                        "urlDoProduto": "https://m.media-amazon.com/images/I/61CpQcnydcL._AC_SL1000_.jpg",
+                        "urlDaImagem": "https://m.media-amazon.com/images/I/61CpQcnydcL._AC_SL1000_.jpg",
+                        "descricao": "sfdsdf",
+                        "status": "AGUARDANDO"
+                    },
+                    {
+                        "id": 14,
+                        "name": "muchila",
+                        "valorNegociado": 180.52,
+                        "dataDaEntrega": "2018-08-29",
+                        "urlDoProduto": "https://m.media-amazon.com/images/I/61CpQcnydcL._AC_SL1000_.jpg",
+                        "urlDaImagem": "https://m.media-amazon.com/images/I/61CpQcnydcL._AC_SL1000_.jpg",
+                        "descricao": "sfdsdf",
+                        "status": "AGUARDANDO"
+                    }
+                ],
+                "pageable": {
+                    "sort": {
+                        "sorted": true,
+                        "unsorted": false,
+                        "empty": false
+                    },
+                    "pageNumber": 0,
+                    "pageSize": 3,
+                    "offset": 0,
+                    "paged": true,
+                    "unpaged": false
+                },
+                "totalElements": 7,
+                "totalPages": 3,
+                "last": false,
+                "first": true,
+                "number": 0,
+                "sort": {
+                    "sorted": true,
+                    "unsorted": false,
+                    "empty": false
+                },
+                "numberOfElements": 3,
+                "size": 3,
+                "empty": false
+            }
+        });
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</body>
+</html>

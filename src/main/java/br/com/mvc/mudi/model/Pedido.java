@@ -1,5 +1,8 @@
 package br.com.mvc.mudi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,6 +21,7 @@ public class Pedido {
     private String urlDaImagem;
     private String descricao;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
