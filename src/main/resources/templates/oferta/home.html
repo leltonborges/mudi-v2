@@ -11,23 +11,28 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-sm-8 mb-4">
-                    <div class="row">
-                        <div class="col-md-5">Valor:
-                            <input type="text" name="valueProduct" id="valueProduct">
-                        </div>
-                        <div class="col-md-7">Data da entrega:
-                            <input type="text" name="dataEntrega" id="dataEntrega">
-                        </div>
-                    </div>
 
                     <div>Produto:
                         <a v-bind:href="pedido.urlDoProduto" target="_blank">{{pedido.name}}</a>
                     </div>
-
                     <div>Descição</div>
                     <div>
-                        <textarea class="form-control">{{pedido.descricao}}</textarea>
+                        <textarea disabled="disabled" class="form-control">{{pedido.descricao}}</textarea>
                     </div>
+                    <div class="row">
+                        <div class="col-md-5">Valor:
+                            <input class="form-control" type="number" step="0.01" name="valueProduct" id="valueProduct" v-model="pedido.valorNegociado">
+                        </div>
+                        <div class="col-md-7">Data da entrega:
+                            <input class="form-control" type="text" name="dataEntrega" id="dataEntrega" v-model="pedido.dataDaEntrega">
+                        </div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="comentario">Comentário</label>
+                        <textarea class="form-control" id="comentario" v-model="pedido.comentario"></textarea>
+                    </div>
+                    <button v-if="pedido.ofertaEnviada" class="btn btn-success">Oferta Enviada</button>
+                    <button v-else v-on:click="enviarOferta(pedido)" class="btn btn-outline-primary">Enviar Oferta</button>
                 </div>
                 <div class="col-12 col-sm-4">
                     <div>
@@ -50,9 +55,6 @@
             </li>
         </ul>
     </nav>
-    <div>
-        {{isDisabled}}
-    </div>
 </div>
 <script>
     function onLoad() {
@@ -65,6 +67,7 @@
                 axios
                     .get('http://localhost:8081/api/pedidos/aguardando')
                     .then(response => {
+                        response.data.content.forEach(ped => ped.ofertaEnviada = false);
                         this.pedidos = response.data;
                     })
             },
@@ -75,6 +78,16 @@
                         .get(`http://localhost:8081/api/pedidos/aguardando?page=${page - 1}`)
                         .then(response => this.pedidos = response.data);
                     this.Disabled();
+                },
+                enviarOferta: function (pedido){
+                    axios
+                        .post(`http://localhost:8081/api/ofertas`, {
+                            pedidoId: pedido.id,
+                            valor: pedido.valorNegociado,
+                            dataDaEntrega: pedido.dataDaEntrega,
+                            comentario: pedido.comentario
+                        })
+                        .then(resp => pedido.ofertaEnviada = true);
                 }
             },
             computed: {

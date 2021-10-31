@@ -1,15 +1,17 @@
 package br.com.mvc.mudi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Pedido {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,9 +23,13 @@ public class Pedido {
     private String urlDaImagem;
     private String descricao;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
+    @OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @JsonIgnore
+    private List<Oferta> ofertas;
 
     @Enumerated(EnumType.STRING)
     private StatusPedido status;
@@ -113,5 +119,13 @@ public class Pedido {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Oferta> getOfertas() {
+        return ofertas;
+    }
+
+    public void setOfertas(List<Oferta> ofertas) {
+        this.ofertas = ofertas;
     }
 }

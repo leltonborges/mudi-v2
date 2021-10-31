@@ -4,6 +4,8 @@ import br.com.mvc.mudi.model.Pedido;
 import br.com.mvc.mudi.model.StatusPedido;
 import br.com.mvc.mudi.model.User;
 import br.com.mvc.mudi.repository.PedidoRepository;
+import br.com.mvc.mudi.service.exceptions.PedidoNotFoundException;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +20,10 @@ public class PedidoService {
 
     @Autowired
     private PedidoRepository pedidoRepo;
+
+    public Pedido getById(Long id) {
+        return pedidoRepo.getById(id);
+    }
 
     public List<Pedido> findAllByUser(User user) {
         return pedidoRepo.findAllByUser(user);
