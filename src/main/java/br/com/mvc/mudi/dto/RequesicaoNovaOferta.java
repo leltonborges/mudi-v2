@@ -4,6 +4,7 @@ import br.com.mvc.mudi.model.Oferta;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,12 +14,12 @@ public class RequesicaoNovaOferta {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private Long pedidoId;
-    @Pattern(regexp = "^\\d+(?!\\/)(.\\d{2}$)?", message = "Formato invalido (xxx[...].xx) ou (xxxxxx)")
-    @NotBlank(message = "Não pode ser nulo")
+    @NotNull(message = "Não pode ser nulo")
     @Min(value = 1, message = "Valor minino é R$ 1,00")
+    @Pattern(regexp = "^\\d+(?!\\/)(.\\d{2}$)?", message = "Formato invalido (000.00)")
     private String valor;
 
-    @NotBlank(message = "Não pode ser nulo")
+    @NotNull(message = "Não pode ser nulo")
     @Pattern(regexp = "^\\d{2}\\/\\d{2}\\/\\d{4}$", message = "Formato valido dd/mm/yyyy")
     private String dataDaEntrega;
     private String comentario;

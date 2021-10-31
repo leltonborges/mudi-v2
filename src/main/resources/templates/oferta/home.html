@@ -21,12 +21,21 @@
                     </div>
                     <div class="row">
                         <div class="col-md-5">Valor:
-                            <input class="form-control" type="number" step="0.01" name="valueProduct" id="valueProduct"
-                                   v-model="pedido.valorNegociado">
+                            <input class="form-control" type="number" step="0.01"
+                                   name="valueProduct" id="valueProduct"
+                                   v-model="pedido.valorNegociado"
+                                   v-bind:class="{'is-invalid': pedido.erros.valor !== ''}">
+                            <div class="invalid-feedback" v-if="pedido.erros.valor !== ''">
+                                <span>{{pedido.erros.valor}}</span>
+                            </div>
                         </div>
                         <div class="col-md-7">Data da entrega:
                             <input class="form-control" type="text" name="dataEntrega" id="dataEntrega"
-                                   v-model="pedido.dataDaEntrega">
+                                   v-model="pedido.dataDaEntrega"
+                                   v-bind:class="{'is-invalid': pedido.erros.dataDaEntrega !== ''}">
+                            <div class="invalid-feedback" v-if="pedido.erros.dataDaEntrega !== ''">
+                                <span>{{pedido.erros.dataDaEntrega}}</span>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group mt-3">
@@ -70,7 +79,13 @@
                 axios
                     .get('http://localhost:8081/api/pedidos/aguardando')
                     .then(response => {
-                        response.data.content.forEach(ped => ped.ofertaEnviada = false);
+                        response.data.content.forEach(ped => {
+                            ped.ofertaEnviada = false
+                            ped.erros = {
+                                valor: '',
+                                dataDaEntrega: ''
+                            }
+                        });
                         this.pedidos = response.data;
                     })
             },
@@ -82,6 +97,10 @@
                         .then(response => this.pedidos = response.data);
                 },
                 enviarOferta: function (pedido) {
+                    pedido.erros = {
+                        valor: '',
+                        dataDaEntrega: ''
+                    };
                     axios
                         .post(`http://localhost:8081/api/ofertas`, {
                             pedidoId: pedido.id,
@@ -89,7 +108,11 @@
                             dataDaEntrega: pedido.dataDaEntrega,
                             comentario: pedido.comentario
                         })
-                        .then(resp => pedido.ofertaEnviada = true);
+                        .then(resp => pedido.ofertaEnviada = true)
+                        .catch(function (err) {
+                            const error = err.response;
+                            error.data.errors.forEach(e => pedido.erros[e.field] = e.defaultMessage)
+                        });
                 },
                 navPage(arrow, event) {
                     event.preventDefault();
@@ -100,7 +123,7 @@
 
                         this.changePage(pageNumber + 2, event);
                     } else if (arrow == "prev") {
-                        if (pageNumber == 0 ) return null;
+                        if (pageNumber == 0) return null;
                         this.changePage(pageNumber, event);
                     }
                 }
