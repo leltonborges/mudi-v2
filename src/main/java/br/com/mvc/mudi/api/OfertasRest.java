@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/ofertas")
 public class OfertasRest {
@@ -18,7 +20,7 @@ public class OfertasRest {
     private PedidoService pedidoService;
 
     @PostMapping
-    public Oferta creaOferta(@RequestBody RequesicaoNovaOferta requesicaOferta) {
+    public Oferta creaOferta(@RequestBody @Valid RequesicaoNovaOferta requesicaOferta) {
         Pedido pedido = pedidoService.getById(requesicaOferta.getPedidoId());
         Oferta nova = requesicaOferta.toOferta();
         nova.setPedido(pedido);
