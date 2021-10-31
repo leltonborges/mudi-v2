@@ -6,7 +6,7 @@
 <div class="container" id="ofertas">
     <div th:replace="~{base :: menu-tab}"/>
     <div th:replace="~{base :: titulo('Faça sua oferta')}"/>
-    <div v-for="pedido in content" class="card mb-3">
+    <div v-for="pedido in pedidos.content" class="card mb-3">
         <div class="card-header alert-warning">{{pedido.name}}</div>
         <div class="card-body">
             <div class="row">
@@ -37,73 +37,59 @@
             </div>
         </div>
     </div>
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" >
+                <a class="page-link">Previous</a>
+            </li>
+            <li v-for="page in pageable" class="page-item">
+                <a class="page-link" v-on:click="changePage(page, $event)">{{page}}</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+    <div>
+        {{isDisabled}}
+    </div>
 </div>
 <script>
     function onLoad() {
         var app = new Vue({
             el: '#ofertas',
             data: {
-                "content": [
-                    {
-                        "id": 18,
-                        "name": "muchila",
-                        "valorNegociado": 180.52,
-                        "dataDaEntrega": "2010-01-05",
-                        "urlDoProduto": "https://m.media-amazon.com/images/I/61CpQcnydcL._AC_SL1000_.jpg",
-                        "urlDaImagem": "https://m.media-amazon.com/images/I/61CpQcnydcL._AC_SL1000_.jpg",
-                        "descricao": "sfdsdf",
-                        "status": "AGUARDANDO"
-                    },
-                    {
-                        "id": 15,
-                        "name": "muchila",
-                        "valorNegociado": 180.52,
-                        "dataDaEntrega": "2007-07-20",
-                        "urlDoProduto": "https://m.media-amazon.com/images/I/61CpQcnydcL._AC_SL1000_.jpg",
-                        "urlDaImagem": "https://m.media-amazon.com/images/I/61CpQcnydcL._AC_SL1000_.jpg",
-                        "descricao": "sfdsdf",
-                        "status": "AGUARDANDO"
-                    },
-                    {
-                        "id": 14,
-                        "name": "muchila",
-                        "valorNegociado": 180.52,
-                        "dataDaEntrega": "2018-08-29",
-                        "urlDoProduto": "https://m.media-amazon.com/images/I/61CpQcnydcL._AC_SL1000_.jpg",
-                        "urlDaImagem": "https://m.media-amazon.com/images/I/61CpQcnydcL._AC_SL1000_.jpg",
-                        "descricao": "sfdsdf",
-                        "status": "AGUARDANDO"
+                pedidos: []
+            },
+            mounted() {
+                axios
+                    .get('http://localhost:8081/api/pedidos/aguardando')
+                    .then(response => {
+                        this.pedidos = response.data;
+                    })
+            },
+            methods: {
+                changePage: function (page, event) {
+                    event.preventDefault();
+                    axios
+                        .get(`http://localhost:8081/api/pedidos/aguardando?page=${page - 1}`)
+                        .then(response => this.pedidos = response.data);
+                    this.Disabled();
+                }
+            },
+            computed: {
+                pageable: function () {
+                    let pages = new Array();
+                    for (let i = 1; i <= this.pedidos.totalPages; i++) {
+                        pages.push(i);
                     }
-                ],
-                "pageable": {
-                    "sort": {
-                        "sorted": true,
-                        "unsorted": false,
-                        "empty": false
-                    },
-                    "pageNumber": 0,
-                    "pageSize": 3,
-                    "offset": 0,
-                    "paged": true,
-                    "unpaged": false
-                },
-                "totalElements": 7,
-                "totalPages": 3,
-                "last": false,
-                "first": true,
-                "number": 0,
-                "sort": {
-                    "sorted": true,
-                    "unsorted": false,
-                    "empty": false
-                },
-                "numberOfElements": 3,
-                "size": 3,
-                "empty": false
+                    return pages;
+                }
             }
         });
     }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>
 </html>
